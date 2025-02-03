@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TheGalleryApp</string>
+    <string name="items_count">%1$d items</string>
 </resources>

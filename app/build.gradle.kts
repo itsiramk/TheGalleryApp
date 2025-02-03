@@ -9,8 +9,10 @@ plugins {
 
 android {
     namespace = "com.iram.thegalleryapp"
-    compileSdk = 34
-
+    compileSdk = 35
+    dataBinding {
+        enable = true
+    }
     defaultConfig {
         applicationId = "com.iram.thegalleryapp"
         minSdk = 21

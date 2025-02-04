@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.iram.thegalleryapp.R
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.iram.thegalleryapp.databinding.ItemImageBinding
 import com.iram.thegalleryapp.databinding.ItemVideoBinding
 import com.iram.thegalleryapp.model.AlbumDetails
@@ -63,7 +63,8 @@ class AlbumDetailsAdapter(
             binding.albumName.text = album.name
             Glide.with(binding.albumThumbnail.context)
                 .load(album.path)
-                .placeholder(R.drawable.ic_launcher_background) // Default image if no media found
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(android.R.drawable.sym_def_app_icon)
                 .into(binding.albumThumbnail)
         }
     }

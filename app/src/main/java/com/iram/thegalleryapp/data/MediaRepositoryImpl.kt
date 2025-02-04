@@ -2,6 +2,7 @@ package com.iram.thegalleryapp.data
 
 import android.content.Context
 import android.provider.MediaStore
+import com.iram.thegalleryapp.R
 import com.iram.thegalleryapp.model.Album
 import com.iram.thegalleryapp.model.AlbumDetails
 import javax.inject.Inject
@@ -49,8 +50,8 @@ class MediaRepositoryImpl @Inject constructor() : MediaRepository {
 
                 while (cursor.moveToNext()) {
                     val path = cursor.getString(pathColumn)
-                    val name = cursor.getString(nameColumn) ?: "Unknown"
-                    val folder = cursor.getString(bucketColumn) ?: "Unknown"
+                    val name = cursor.getString(nameColumn) ?: android.os.Build.MODEL
+                    val folder = cursor.getString(bucketColumn) ?: android.os.Build.MODEL
                     val mediaType = cursor.getInt(mediaTypeColumn)
 
                     // Filter out cache, thumbnails, and hidden files
@@ -70,7 +71,7 @@ class MediaRepositoryImpl @Inject constructor() : MediaRepository {
                     // Add to "All Images" or "All Videos"
                     if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
                         allImages.add(albumDetails)
-                        if (folder.equals("Camera", ignoreCase = true) && !cameraAlbum.contains(
+                        if (folder.equals(context.getString(R.string.camera), ignoreCase = true) && !cameraAlbum.contains(
                                 albumDetails
                             )
                         ) {
@@ -82,14 +83,13 @@ class MediaRepositoryImpl @Inject constructor() : MediaRepository {
                 }
             }
 
-        // Convert map to album list
         val albums = albumMap.map { Album(it.key, it.value, it.value.size) }.toMutableList()
 
         // Add special folders
-        if (allImages.isNotEmpty()) albums.add(0, Album("All Images", allImages, allImages.size))
-        if (allVideos.isNotEmpty()) albums.add(1, Album("All Videos", allVideos, allVideos.size))
-        if (cameraAlbum.isNotEmpty() && !albumMap.containsKey("Camera")) {
-            albums.add(2, Album("Camera", cameraAlbum, cameraAlbum.size))
+        if (allImages.isNotEmpty()) albums.add(0, Album(context.getString(R.string.all_images), allImages, allImages.size))
+        if (allVideos.isNotEmpty()) albums.add(1, Album(context.getString(R.string.all_videos), allVideos, allVideos.size))
+        if (cameraAlbum.isNotEmpty() && !albumMap.containsKey(context.getString(R.string.camera))) {
+            albums.add(2, Album(context.getString(R.string.camera), cameraAlbum, cameraAlbum.size))
         }
         return albums
     }

@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">TheGalleryApp</string>
-    <string name="items_count">%1$d items</string>
+    <string name="items">items</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_detail">This app needs access to your media to display photos and videos.</string>
+    <string name="permission_denied">You have denied storage permissions permanently. Please enable them in Settings.</string>
+    <string name="cancel">Cancel</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="try_again">Try Again</string>
+    <string name="all_images">All Images</string>
+    <string name="all_videos">All Videos</string>
+    <string name="camera">Camera</string>
 </resources>

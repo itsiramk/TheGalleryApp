@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.iram.thegalleryapp.databinding.LayoutDialogVideoBinding
 import com.iram.thegalleryapp.presentation.viewmodel.VideoPlayerViewModel
+import com.iram.thegalleryapp.utils.AppConstant.VIDEO_PATH
+import kotlinx.coroutines.launch
 
 /**
  * VideoPlayerDialogFragment for viewing videos
@@ -32,19 +36,23 @@ class VideoPlayerDialogFragment : DialogFragment() {
     ): View {
         val binding = LayoutDialogVideoBinding.inflate(inflater, container, false)
         playerView = binding.playerView
-        exoPlayer = ExoPlayer.Builder(requireContext()).build()
+        if (exoPlayer == null) {
+            exoPlayer = ExoPlayer.Builder(requireContext()).build()
+        }
         playerView.player = exoPlayer
         viewModel = ViewModelProvider(this)[VideoPlayerViewModel::class.java]
-        arguments?.getString("VIDEO_PATH")?.let {
+        arguments?.getString(VIDEO_PATH)?.let {
             viewModel.setVideoPath(it)
         }
-        lifecycleScope.launchWhenStarted {
-            viewModel.videoPath.collect { path ->
-                if (!path.isNullOrEmpty()) {
-                    val mediaItem = MediaItem.fromUri(path)
-                    exoPlayer?.setMediaItem(mediaItem)
-                    exoPlayer?.prepare()
-                    exoPlayer?.play()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.videoPath.collect { path ->
+                    if (!path.isNullOrEmpty()) {
+                        val mediaItem = MediaItem.fromUri(path)
+                        exoPlayer?.setMediaItem(mediaItem)
+                        exoPlayer?.prepare()
+                        exoPlayer?.playWhenReady = true
+                    }
                 }
             }
         }
@@ -72,11 +80,9 @@ class VideoPlayerDialogFragment : DialogFragment() {
 
     companion object {
         fun newInstance(videoPath: String): VideoPlayerDialogFragment {
-            val fragment = VideoPlayerDialogFragment()
-            val args = Bundle()
-            args.putString("VIDEO_PATH", videoPath)
-            fragment.arguments = args
-            return fragment
+            return VideoPlayerDialogFragment().apply {
+                arguments = Bundle().apply { putString(VIDEO_PATH, videoPath) }
+            }
         }
     }
 }

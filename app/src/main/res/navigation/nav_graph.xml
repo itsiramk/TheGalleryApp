@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.iram.thegalleryapp.presentation.ui.AlbumListFragment"
-        android:label="Gallery">
+        android:label="Gallery"
+        tools:layout="@layout/fragment_album_list">
         <action
             android:id="@+id/action_home_to_albumDetails"
             app:destination="@id/albumDetailsFragment" />
+
+        <action
+            android:id="@+id/actionHomeToAlbumDetailsWithVideo"
+            app:destination="@id/albumDetailsFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/albumDetailsFragment"
         android:name="com.iram.thegalleryapp.presentation.ui.AlbumDetailsFragment"
-        android:label="Album Details">
+        android:label="Album Details"
+        tools:layout="@layout/fragment_album_details">
         <argument
-            android:name="album"
-            app:argType="com.iram.thegalleryapp.model.Album" />
+            android:name="albumName"
+            app:argType="string" />
+
+        <argument
+            android:name="albumDetails"
+            app:argType="android.os.Parcelable[]" />
+
     </fragment>
+
 </navigation>

@@ -8,6 +8,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * AppModule for providing dependencies
+ * Created by: Iram Khan
+ * Email: khan.iram02@gmail.com
+ * Date: 3rd Feb 2025
+ */
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {

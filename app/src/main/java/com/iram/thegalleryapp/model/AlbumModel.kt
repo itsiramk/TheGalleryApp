@@ -3,15 +3,22 @@ package com.iram.thegalleryapp.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Model class for Album
+ * Created by: Iram Khan
+ * Email: khan.iram02@gmail.com
+ * Date: 3rd Feb 2025
+ */
+
 @Parcelize
 data class Album(
     val name: String,
-    val mediaItems: List<MediaItem>,
+    val albumDetails: List<AlbumDetails>,
     val itemCount: Int
 ) : Parcelable
 
 @Parcelize
-data class MediaItem(
+data class AlbumDetails(
     val path: String,
     val name: String,
     val mediaType: Int,
@@ -20,4 +27,4 @@ data class MediaItem(
 ) : Parcelable
 
 
-enum class MediaType { IMAGE, VIDEO }
+enum class AlbumType { IMAGE, VIDEO }

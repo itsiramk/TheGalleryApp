@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,27 +22,34 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.iram.thegalleryapp.presentation.adapter.AlbumAdapter
 import com.iram.thegalleryapp.databinding.FragmentAlbumListBinding
-import com.iram.thegalleryapp.presentation.viewmodel.MediaViewModel
+import com.iram.thegalleryapp.presentation.viewmodel.AlbumViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
+/**
+ * Class for displaying album of the device
+ * Created by: Iram Khan
+ * Email: khan.iram02@gmail.com
+ * Date: 3rd Feb 2025
+ */
 
 @AndroidEntryPoint
 class AlbumListFragment : Fragment() {
     private var _binding: FragmentAlbumListBinding? = null
     private val binding get() = _binding
-    private val viewModel: MediaViewModel by viewModels()
+    private val viewModel: AlbumViewModel by viewModels()
     private lateinit var albumAdapter: AlbumAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAlbumListBinding.inflate(inflater, container, false)
-//         _binding?.albumTitle?.text = albumName
-
-        albumAdapter = AlbumAdapter { album ->
-            val action = AlbumListFragmentDirections.actionHomeToAlbumDetails(album)
-            findNavController().navigate(action)
-        }
+         albumAdapter = AlbumAdapter(
+            onAlbumClick = { album ->
+                val action = AlbumListFragmentDirections.actionHomeToAlbumDetails(album.name, album.albumDetails.toTypedArray())
+                findNavController().navigate(action)
+            }
+        )
         binding?.recyclerView?.layoutManager = GridLayoutManager(requireContext(), 3)
         binding?.recyclerView?.adapter = albumAdapter
         return binding?.root
@@ -59,7 +65,6 @@ class AlbumListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.albums.collect { albumList ->
-                    Log.d("IRAM", "Albums received: ${albumList.size}")
                     albumAdapter.submitList(albumList)
                 }
             }
@@ -76,7 +81,6 @@ class AlbumListFragment : Fragment() {
             }
 
             if (isGranted) {
-                Log.d("IRAM", "Permissions granted, loading albums.")
                 viewModel.loadAlbums(requireContext())
             } else {
                 handlePermissionDenied()
@@ -118,7 +122,7 @@ class AlbumListFragment : Fragment() {
             .setMessage("You have denied storage permissions permanently. Please enable them in Settings.")
             .setPositiveButton("Open Settings") { _, _ ->
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.fromParts("package", requireContext().packageName, null)
+                    data = Uri.fromParts(requireContext().packageName, requireContext().packageName, null)
                 }
                 startActivity(intent)
             }
@@ -146,10 +150,8 @@ class AlbumListFragment : Fragment() {
         }
 
         if (isGranted) {
-            Log.d("IRAM", "Permissions already granted, loading albums.")
             viewModel.loadAlbums(requireContext())
         } else {
-            Log.d("IRAM", "Requesting permissions...")
             val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayOf(Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO)
             } else {

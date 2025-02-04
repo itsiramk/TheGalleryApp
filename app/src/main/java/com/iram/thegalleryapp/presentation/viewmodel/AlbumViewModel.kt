@@ -1,29 +1,32 @@
 package com.iram.thegalleryapp.presentation.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iram.thegalleryapp.data.MediaRepository
-import com.iram.thegalleryapp.model.MediaItem
+import com.iram.thegalleryapp.model.Album
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Viewmodel class for Album
+ * Created by: Iram Khan
+ * Email: khan.iram02@gmail.com
+ * Date: 4th Feb 2025
+ */
+
 @HiltViewModel
-class AlbumViewModel @Inject constructor(
-    private val repository: MediaRepository
-) : ViewModel() {
+class AlbumViewModel @Inject constructor(private val mediaRepository: MediaRepository) :
+    ViewModel() {
+    private val _albums = MutableStateFlow<List<Album>>(emptyList())
+    val albums: StateFlow<List<Album>> get() = _albums
 
-    private val _mediaList = MutableLiveData<List<MediaItem>>()
-    val mediaList: LiveData<List<MediaItem>> get() = _mediaList
-
-    fun loadMedia(context: Context, albumName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-       //     val mediaItems = repository.getMediaFromAlbum(context, albumName)
-         //   _mediaList.postValue(mediaItems)
+    fun loadAlbums(context: Context) {
+        viewModelScope.launch {
+            _albums.value = mediaRepository.getAlbums(context)
         }
     }
 }

@@ -3,7 +3,7 @@ package com.iram.thegalleryapp.data
 import android.content.Context
 import android.provider.MediaStore
 import com.iram.thegalleryapp.model.Album
-import com.iram.thegalleryapp.model.MediaItem
+import com.iram.thegalleryapp.model.AlbumDetails
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,10 +16,10 @@ import javax.inject.Singleton
 @Singleton
 class MediaRepositoryImpl @Inject constructor() : MediaRepository {
     override suspend fun getAlbums(context: Context): List<Album> {
-        val albumMap = mutableMapOf<String, MutableList<MediaItem>>()
-        val allImages = mutableListOf<MediaItem>()
-        val allVideos = mutableListOf<MediaItem>()
-        val cameraAlbum = mutableListOf<MediaItem>()
+        val albumMap = mutableMapOf<String, MutableList<AlbumDetails>>()
+        val allImages = mutableListOf<AlbumDetails>()
+        val allVideos = mutableListOf<AlbumDetails>()
+        val cameraAlbum = mutableListOf<AlbumDetails>()
 
         val projection = arrayOf(
             MediaStore.MediaColumns.DATA,
@@ -56,7 +56,7 @@ class MediaRepositoryImpl @Inject constructor() : MediaRepository {
                     // Filter out cache, thumbnails, and hidden files
                     if (path.contains("/cache/") || path.contains(".nomedia")) continue
 
-                    val mediaItem = MediaItem(
+                    val albumDetails = AlbumDetails(
                         path,
                         name,
                         mediaType,
@@ -65,16 +65,19 @@ class MediaRepositoryImpl @Inject constructor() : MediaRepository {
                     )
 
                     // Categorize media into respective albums
-                    albumMap.getOrPut(folder) { mutableListOf() }.add(mediaItem)
+                    albumMap.getOrPut(folder) { mutableListOf() }.add(albumDetails)
 
                     // Add to "All Images" or "All Videos"
                     if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
-                        allImages.add(mediaItem)
-                        if (folder.equals("Camera", ignoreCase = true)) {
-                            cameraAlbum.add(mediaItem)
+                        allImages.add(albumDetails)
+                        if (folder.equals("Camera", ignoreCase = true) && !cameraAlbum.contains(
+                                albumDetails
+                            )
+                        ) {
+                            cameraAlbum.add(albumDetails)
                         }
                     } else if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                        allVideos.add(mediaItem)
+                        allVideos.add(albumDetails)
                     }
                 }
             }
@@ -85,8 +88,9 @@ class MediaRepositoryImpl @Inject constructor() : MediaRepository {
         // Add special folders
         if (allImages.isNotEmpty()) albums.add(0, Album("All Images", allImages, allImages.size))
         if (allVideos.isNotEmpty()) albums.add(1, Album("All Videos", allVideos, allVideos.size))
-        if (cameraAlbum.isNotEmpty()) albums.add(2, Album("Camera", cameraAlbum, cameraAlbum.size))
-
+        if (cameraAlbum.isNotEmpty() && !albumMap.containsKey("Camera")) {
+            albums.add(2, Album("Camera", cameraAlbum, cameraAlbum.size))
+        }
         return albums
     }
 }

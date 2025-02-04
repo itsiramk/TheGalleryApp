@@ -5,7 +5,7 @@
     <data>
         <variable
             name="mediaViewModel"
-            type="com.iram.thegalleryapp.presentation.viewmodel.MediaViewModel"/>
+            type="com.iram.thegalleryapp.presentation.viewmodel.AlbumViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

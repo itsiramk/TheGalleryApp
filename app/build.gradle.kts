@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(libs.glide)
+    implementation(libs.androidx.fragment.testing)
     kapt(libs.glide.compiler)
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
@@ -54,6 +55,11 @@ dependencies {
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.mockito)
+    testImplementation(libs.mockito)
+    testImplementation(libs.mockito)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -25,6 +25,8 @@ This is a prerequisite without which we cannot proceed*.
 
 -The cancel icon is a custom svg.
 
+-Added 100% test case coverage for viewmodel using Mockito
+
 ***Android Components used:***
 
 *Development Language* - Kotlin
@@ -45,5 +47,8 @@ This is a prerequisite without which we cannot proceed*.
 
 *Key Highlights* - Custom Dialog, Custom SVG, Custom Progress Dialog, No external libraries used for custom views.
 
-<img width="350" alt="image1" src="https://github.com/itsiramk/TheGalleryApp/blob/master/gallery.png">  <img width="350" alt="image2" src="https://github.com/itsiramk/TheGalleryApp/blob/master/videolist.png">  
+*Testing* - Mockito
+
+<img src="https://github.com/itsiramk/TheGalleryApp/blob/master/testcoverage.png"> 
+<img width="350" alt="image1" src="https://github.com/itsiramk/TheGalleryApp/blob/master/gallery.png"> <img width="350" alt="image2" src="https://github.com/itsiramk/TheGalleryApp/blob/master/videolist.png">  
 <img width="350" alt="image3" src="https://github.com/itsiramk/TheGalleryApp/blob/master/videoplay.png">  

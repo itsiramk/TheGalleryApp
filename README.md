@@ -6,7 +6,7 @@
 
 App uses the FusedLocationProviderClient and fetches uses current location.
 
--*On App launch we ask the mandatory user permissions to access storage without which we cannot access device storage. 
+-*On App launch we ask the mandatory storage permissions to access storage without which we cannot access device storage. 
 This is a prerequisite without which we cannot proceed*.
  
 -Once permission is received, we use android.provider.MediaStore to access device albums*
@@ -15,7 +15,15 @@ This is a prerequisite without which we cannot proceed*.
 
 -Each folder in device is displayed with its album name and item count
 
--For folders with no name default Device Model name is displayed to avoid displayed blank album name
+-For folders with no name default Device Model name is displayed to avoid displaying blank album name
+
+-After clicking on each folder, we display all the items within that folder in a another screen
+
+-For videos, we have a play icon on click of which we are playing the video in a Dialog which can be closed too.
+
+-The dialog is cancelable when user touches outside. Also, user can close it with a cancel icon.
+
+-The cancel icon is a custom svg.
 
 ***Android Components used:***
 
@@ -33,6 +41,9 @@ This is a prerequisite without which we cannot proceed*.
 
 *Image Loading* - Glider
 
-*Video Displaying” - Exoplayer
+*Video Displaying* - Exoplayer
 
-![Image Albums](./images/gallery.png)    ![Loading Videos](./images/video.mp4)
+*Key Highlights* - Custom Dialog, Custom SVG, Custom Progress Dialog, No external libraries used for custom views.
+
+<img width="350" alt="image1" src="https://github.com/itsiramk/TheGalleryApp/blob/master/gallery.png">  <img width="350" alt="image2" src="https://github.com/itsiramk/TheGalleryApp/blob/master/videolist.png">  
+<img width="350" alt="image3" src="https://github.com/itsiramk/TheGalleryApp/blob/master/videoplay.png">  

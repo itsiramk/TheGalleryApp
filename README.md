@@ -6,7 +6,7 @@
 
 App uses the FusedLocationProviderClient and fetches uses current location.
 
--*On App launch we ask the mandatory storage permissions to access storage without which we cannot access device storage. 
+-*On App launch we ask the storage permissions to the user without which we cannot access device storage. 
 This is a prerequisite without which we cannot proceed*.
  
 -Once permission is received, we use android.provider.MediaStore to access device albums*
@@ -15,16 +15,22 @@ This is a prerequisite without which we cannot proceed*.
 
 -Each folder in device is displayed with its album name and item count
 
--For folders with no name default Device Model name is displayed to avoid displaying blank album name
+-For folders with no name, default Device Model name is displayed to avoid displaying blank album name
 
--After clicking on each folder, we display all the items within that folder in a another screen
+-After clicking on each folder, we display all the items within that folder in a another screen in a recyclerview
 
--For videos, we have a play icon on click of which we are playing the video in a Dialog which can be closed too.
+-All images and videos are displayed with its default name.
+
+-For videos, we have a play icon (using the android inbuilt play icon) on click of which we are playing the video in a Dialog which can be closed too.
 
 -The dialog is cancelable when user touches outside. Also, user can close it with a cancel icon.
 
 -The cancel icon is a custom svg.
 
+- Defined all constants in a separate file. Also have made sure to create custom styles.
+
+- Added strings and dimen file too.
+  
 -Added 100% test case coverage for viewmodel using Mockito
 
 ***Android Components used:***
@@ -35,8 +41,6 @@ This is a prerequisite without which we cannot proceed*.
 
 *Dependency Injection* - Dagger Hilt
 
-*Networking Libraries* - Retrofit
-
 *Asynchronous calls* - Flows, Coroutines
 
 *UI* - ConstraintLayout, GridLayout.
@@ -45,7 +49,7 @@ This is a prerequisite without which we cannot proceed*.
 
 *Video Displaying* - Exoplayer
 
-*Key Highlights* - Custom Dialog, Custom SVG, Custom Progress Dialog, No external libraries used for custom views.
+*Key Highlights* - Custom SVG, Custom Progress Dialog, No external libraries used for custom views.
 
 *Testing* - Mockito
 

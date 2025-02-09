@@ -4,8 +4,6 @@
 
 ### This is a Kotlin Project.
 
-App uses the FusedLocationProviderClient and fetches uses current location.
-
 -*On App launch we ask the storage permissions to the user without which we cannot access device storage. 
 This is a prerequisite without which we cannot proceed*.
  
